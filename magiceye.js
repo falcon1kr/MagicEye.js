@@ -21,7 +21,8 @@
         colors: [
           [255, 255, 255, 255],
           [0, 0, 0, 255]
-        ]
+        ],
+        showEyeGuide: false,
       };
 
       for (var property in defaultOptions) {
@@ -60,7 +61,8 @@
         width: width,
         height: height,
         depthMap: depthMap,
-        colors: opts.colors
+        colors: opts.colors,
+        showEyeGuide: opts.showEyeGuide,
       });
 
       switch (element.tagName) {
@@ -169,6 +171,21 @@
             pixelOffset = (y * width * 4) + (x * 4);
             for (i = 0; i < 4; i++) {
               pixels[pixelOffset + i] = pixels[(y * width * 4) + (same[x] * 4) + i];
+            }
+          }
+        }
+      }
+
+      if (opts.showEyeGuide) {
+        for (x = -5; x < 5; x++) {
+          for (y = 0; y < 10; y++) {
+            for (var useEyeSep = 0; useEyeSep <=1; useEyeSep++) {
+              var toColorX = (width - eyeSep * useEyeSep) / 2 + x;
+              var toColorPixel = toColorX + width * y;
+              pixelOffset = (y * width * 4) + (toColorX * 4);
+              for (i = 0; i < 4; i++) {
+                pixels[pixelOffset + i] = [255, 0, 0, 255][i];
+              }
             }
           }
         }
